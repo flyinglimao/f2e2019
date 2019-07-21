@@ -1,0 +1,225 @@
+:root {
+    --light-blue: rgba(214, 225, 234, 1);
+    --blue: rgba(41, 115, 195, 1);
+    --white: rgba(245, 245, 241, 1);
+    --red: rgba(246, 83, 71, 1);
+    --black: rgba(70, 80, 98, 1);
+    --green: rgba(38, 208, 124, 1);
+}
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    display: flex;
+    font-family: sans-serif;
+    color: var(--black);
+}
+
+.nav {
+    text-align: center;
+    background: var(--blue);
+    width: 85px;
+    position: relative;
+    padding: 20px 0;
+}
+
+.nav-link {
+    display: block;
+    text-decoration: none;
+    color: var(--white);
+    height: 60px;
+    line-height: 60px;
+    font-size: 25px;
+}
+
+.nav-link.active {
+    background: var(--white);
+    color: var(--blue);
+}
+
+.user-avatar {
+    border: 1px solid white;
+    border-radius: 99%;
+    width: 45px;
+    height: 45px;
+}
+
+.brand-title {
+    font-size: 30px;
+    height: unset;
+    display: block;
+    transform: rotate(0.75turn);
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+}
+
+.main {
+    flex-grow: 1;
+    background: var(--white);
+}
+
+.container {
+    position: relative;
+    margin: 0 auto;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    display: flex;
+    max-width: 1000px;
+}
+
+.item {
+    flex: 1;
+    height: 300px;
+    text-align: left;
+}
+
+.todo {
+    position: relative;
+    margin: 0 15px;
+    padding: 10px 0;
+    background: var(--light-blue);
+    border-radius: 12px;
+}
+
+.todo-title {
+    font-size: 22px;
+    margin-left: 20px;
+}
+
+.todo-list {
+    list-style: none;
+    padding-left: 0px;
+}
+
+.todo-item {
+    line-height: 30px;
+    padding-left: 20px;
+    transition: all .4s;
+}
+
+.todo-list:not(:hover) .todo-item.active, .todo-item:hover {
+    background: var(--blue);
+    color: var(--white);
+    font-weight: bold;
+    transform: scale(1.05);
+    border-radius: 6px;
+    padding: 2px 0 2px 20px;
+    box-shadow: 1px 1px 4px rgba(70, 80, 98, .6);
+}
+
+.todo-add {
+    position: absolute;
+    bottom: 15px;
+    margin-left: 20px;
+    font-weight: bold;
+    color: var(--red);
+    text-decoration: none;
+}
+
+.clock {
+    flex: 1.6;
+}
+
+.task {
+    margin: 0 20px;
+    position: relative;
+}
+
+.tomatoes {
+    color: var(--red);
+    letter-spacing: 12px;
+    padding-left: 8px;
+}
+
+.rotten {
+    color: var(--black);
+}
+
+.running {
+    color: var(--light-blue);
+}
+
+.clock-actions {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+.clock-button {
+    flex: 1;
+    background: none;
+    border: none;
+    font-size: 40px;
+    color: var(--black);
+}
+
+.play {
+    color: var(--blue);
+}
+
+.pause {
+    color: var(--red);
+}
+
+.clock {
+    width: 100%;
+    padding-top: 100%;
+    position: relative;
+    background: var(--light-blue);
+    border: 12px solid var(--blue);
+    border-radius: 99%;
+}
+
+.line {
+    display: block;
+    background: var(--blue);
+    position: absolute;
+}
+
+.line-left {
+    left: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 3px;
+}
+
+.line-right {
+    right: 2%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 24px;
+    height: 3px;
+}
+
+.line-top {
+    top: 2%;
+    right: 50%;
+    transform: translateX(-50%);
+    height: 22px;
+    width: 3px;
+}
+
+.line-bottom {
+    bottom: 2%;
+    right: 50%;
+    transform: translateX(-50%);
+    height: 22px;
+    width: 3px;
+}
+
+.clock-time {
+    font-size: 72px;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%);
+    position: absolute;
+    font-weight: bold;
+    color: var(--blue);
+}
