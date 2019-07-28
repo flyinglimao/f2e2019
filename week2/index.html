@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="normalize.css">
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+        body {
+            padding: 80px 120px;
+            box-sizing: border-box;
+            font-family: DMSerifDisplay-Regular;
+            background: radial-gradient(ellipse 125% 100% at 50% 0, #2a2929 50%,#d8c69a 50.1%,#333 50.2%);
+            /* background: linear-gradient(#2a2929 50%,#d8c69a 50.1%,#333 50.2%); */
+            color: #D8C69A;
+        }
+        [draggable="true"] {
+            /*
+            To prevent user selecting inside the drag source
+            */
+            user-select: none;
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+        div {
+            box-sizing: border-box;
+        }
+        .box {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+        }
+        .col {
+            flex: 1;
+        }
+        .cells .cell {
+            width: 90px;
+            height: 141px;
+        }
+        
+        .cells {
+            height: 190px;
+        }
+
+        .cells > .col {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 40px;
+        }
+        .info {
+            height: 60px;
+            font-size: 24px;
+            line-height: 60px;
+            padding: 0 60px;
+        }
+        .time {
+            text-align: right;
+        }
+
+        .free > .cell {
+            border: 1px solid #D8C69A;
+            background: rgba(216,198,154,0.10);
+            border-radius: 10px;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        .store > .cell {
+            border: 1px solid #CFCFCF;
+            border-radius: 10px;
+        }
+
+        .pad > .col {
+            display: flex;
+            justify-content: space-around;
+            padding: 0 40px;
+        }
+        .pad .cell {
+            width: 90px;
+            height: calc(100vh - 391px);
+            position: relative;
+        }
+        .card {
+            width: 90px;
+            height: 141px;
+            position: absolute;
+            border-radius: 10px;
+            background-repeat: no-repeat;
+            background-position: center center;
+        }
+        button {
+            width: 4em;
+            background: #161616;
+            border: none;
+            border-radius: 2em;
+            color: #D8C69A;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div class="box cells">
+            <div class="col free">
+                <div class="cell" style="background-image: url('img/club_index.png')"></div>
+                <div class="cell" style="background-image: url('img/heart_index.png')"></div>
+                <div class="cell" style="background-image: url('img/diamond_index.png')"></div>
+                <div class="cell" style="background-image: url('img/spade_index.png')"></div>
+            </div>
+            <div class="col store">
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+                <div class="cell"></div>
+            </div>
+        </div>
+        <div class="box pad">
+            <div class="col">
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/heart_5.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/heart_3.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/club_13.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/diamond_7.png')"></div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/diamond_7.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/diamond_7.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/diamond_7.png')"></div>
+                </div>
+                <div class="cell">
+                    <div class="card" draggable style="background-image: url('img/diamond_7.png')"></div>
+                </div>
+            </div>
+        </div>
+        <div class="box info">
+            <div class="col btns">
+                <button>Reset</button>
+                <button>Undo</button>
+            </div>
+            <div class="col time">
+                Time: {{ timeString(time) }}
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                time: 0,
+                timer: null
+            },
+            methods: {
+                timeString(time) {
+                    let hour = Math.floor(time / 3600)
+                    let min = Math.floor(time % 3600 / 60)
+                    let sec = time % 60
+                    if (hour < 10) hour = '0' + hour
+                    else hour = '' + hour
+                    if (min < 10) min = '0' + min
+                    else min = '' + min
+                    if (sec < 10) sec = '0' + sec
+                    else sec = '' + sec
+                    return hour + ':' + min + ':' + sec
+                },
+                startTimer() {
+                    if (this.timer) {
+                        clearInterval(this.timer)
+                        this.time = 0
+                    }
+                    this.timer = setInterval(()=> this.time ++, 1000)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
