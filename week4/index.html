@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue Page</title>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            font-family: -apple-system, "Noto Sans", "Helvetica Neue", Helvetica, "Nimbus Sans L", Arial, "Liberation Sans", "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC", "Source Han Sans SC", "Source Han Sans CN", "Microsoft YaHei", "Wenquanyi Micro Hei", "WenQuanYi Zen Hei", "ST Heiti", SimHei, "WenQuanYi Zen Hei Sharp", "微軟正黑體", "Microsoft JhengHei", sans-serif; 
+        }
+        .progress {
+            background: #FAFAFA;
+            text-align: center;
+            height: auto;
+        }
+        .progress .steps {
+            display: flex;
+            width: 100%;
+            align-items: center;
+        }
+        .progress .step {
+            padding: 18px 4px 0px 4px;
+        }
+        .progress .step i {
+            font-size: 18px;
+            width: 32px;
+            height: 32px;
+            color: white;
+            background: #DCDCDC;
+            padding: 8px 7px 6px 7px;
+            border-radius: 99%;
+        }
+        .progress .step.active i {
+            background: #7EBDDA;
+        }
+        .progress .step.active .helper {
+            color: #7EBDDA;
+        }
+        .progress .divider{
+            flex: 1;
+            height: 1px;
+            background: #DCDCDC;
+        }
+        .progress .divider.active{
+            background: #7EBDDA;
+        }
+        .table th {
+            border-top: 0;
+        }
+        .items tr:not(:last-child) {
+            border-bottom: #DCDCDC 2px dashed;
+        }
+        .items tr.no-border {
+            border-bottom: 0;
+        }
+        .table td {
+            border: none;
+        }
+        .table td:nth-child(2) {
+            text-align: right;
+        }
+        .item {
+            display: flex;
+        }
+        .item .image {
+            display: inline-block;
+        }
+        .item .image {
+            width: 60px;
+            height: 60px;
+            background-position: center !important;
+            background-size: cover !important;
+            border: 1px solid #DCDCDC;
+            border-radius: 4px;
+            margin-right: 12px;
+        }
+        .item .product {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+        }
+        .item .origin-price {
+            font-size: 0.8em;
+            color: #979797;
+        }
+        .item .amount {
+            width: 20%;
+            min-width: 108px;
+        }
+        .item .amount .btn-outline-secondary {
+            border-color: #DCDCDC;
+        }
+        .item .amount .form-control::-webkit-outer-spin-button, .item .amount .form-control::-webkit-inner-spin-button{
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .item .amount .form-control {
+            -moz-appearance:textfield;
+        }
+        .item + .helper {
+            font-size: 0.8em;
+            margin: 8px 0;
+        }
+        .helper.fall {
+            color: #D05A5A;
+        }
+        .item + .helper.fall::before {
+            content: '';
+            font: normal normal normal 14px/1 FontAwesome;
+        }
+        .item + .helper.fall::after {
+            content: '活動未符合';
+        }
+        .helper.success {
+            color: #94D0AE;
+        }
+        .item + .helper.success::before {
+            content: '';
+            font: normal normal normal 14px/1 FontAwesome;
+        }
+        .item + .helper.success::after {
+            content: '活動符合';
+        }
+        .btn-next {
+            background: #7EBDDA;
+            color: #FFFFFF;
+        }
+        @media screen and (min-width: 576px){
+            .progress {
+                padding: 30px 0 15px 0;
+            }
+            .progress .steps {
+                height: 45px;
+                max-width: 500px;
+            }
+            .progress .steps .helper {
+                color: #DCDCDC;
+            }
+            .progress .steps.active .helper {
+                color: #7EBDDA;
+            }
+            .cart {
+                max-width: 1000px;
+            }
+            .btn-next {
+                width: 150px;
+            }
+        }
+
+        @media screen and (max-width: 576px){
+            .progress {
+                padding: 10px 15px 20px 15px;
+            }
+            .progress .helper, .item .origin-price, .free-ship {
+                display: none;
+            }
+            .progress .steps {
+                height: 30px;
+            }
+            .btn-next {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="app" class="container-fluid">
+        <div class="progress row">
+            <div class="steps mx-auto">
+                <div class="step" :class="step >= 1 ? 'active' : ''">
+                    <i class="fa fa-shopping-cart"></i>
+                    <p class="helper">購物車</p>
+                </div>
+                <div class="divider" :class="step > 1 ? 'active' : ''"></div>
+                <div class="step" :class="step >= 2 ? 'active' : ''">
+                    <i class="fa fa-credit-card-alt" style="font-size: 15px;"></i>
+                    <p class="helper">付款</p>
+                </div>
+                <div class="divider" :class="step > 2 ? 'active' : ''"></div>
+                <div class="step" :class="step === 3 ? 'active' : ''">
+                    <i class="fa fa-check"></i>
+                    <p class="helper">完成</p>
+                </div>
+            </div>
+        </div>
+        <div class="cart row mx-auto d-none" :class="step === 1 ? 'd-block' : ''">
+            <div class="col-12">
+                <table class="items table">
+                    <thead style="color: #979797">
+                        <tr>
+                            <th>品項</th>
+                            <th class="text-right" style="width: 15%">小記</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="item">
+                                    <div class="image" style="background: url('https://loremflickr.com/1280/900/cat')"></div>
+                                    <div class="product">
+                                        <span>MOC CUP</span>
+                                        <span class="origin-price">原價：</span>
+                                    </div>
+                                    <div class="amount">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-secondary" type="button" >-</button>
+                                            </div>
+                                            <input type="number" class="form-control" value="1">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="helper success">
+                                    【滿千折百終年季】
+                                </p>
+                            </td>
+                            <td>$660</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="item">
+                                    <div class="image" style="background: url('https://loremflickr.com/1280/900/cat')"></div>
+                                    <div class="product">
+                                        <span>MOC CUP</span>
+                                        <span class="origin-price">原價：</span>
+                                    </div>
+                                    <div class="amount">
+                                        <div class="input-group mb-3">
+                                            <div class="input-group-prepend">
+                                                <button class="btn btn-outline-secondary" type="button" >-</button>
+                                            </div>
+                                            <input type="number" class="form-control" value="1">
+                                            <div class="input-group-append">
+                                                <button class="btn btn-outline-secondary" type="button">+</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="helper success">
+                                    【滿千折百終年季】
+                                </p>
+                            </td>
+                            <td>$660</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table table-borderless text-right" style="color: #979797; font-size: .9em">
+                    <tbody>
+                        <tr>
+                            <td colspan="3">$94,870</td>
+                        </tr>
+                        <tr>
+                            <td class="helper success free-ship">已達免運門檻</td>
+                            <td style="width: 4em">運費</td>
+                            <td style="width: 15%">$0</td>
+                        </tr>
+                        <tr style="color: #2B2B2B">
+                            <td colspan="2">總計</td>
+                            <td >$94,870</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button class="btn btn-next pull-right">
+                    結帳
+                </button>
+            </div>
+        </div>
+        <div class="pay">
+            <div class="methods">
+                
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Vue -->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <!-- Prod
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    -->
+    <script>
+        const vm = new Vue({
+            el: '#app',
+            data: {
+                step: 2,
+            }
+        })
+    </script>
+</body>
+</html>
